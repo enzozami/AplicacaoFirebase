@@ -1,7 +1,10 @@
 package com.example.aplicacaofirebase;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,19 +24,43 @@ public class listaProdutos extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ProdutosAdapter produtosAdapter;
     private List<Produto> listaProdutos;
+    private List<Produto> listaProdutosFiltrados;
+    private EditText editTextFiltro;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_produtos);
 
         recyclerView = findViewById(R.id.recyclerView);
+        editTextFiltro = findViewById(R.id.editTextFiltro);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         listaProdutos = new ArrayList<>();
+        listaProdutosFiltrados = new ArrayList<>();
         produtosAdapter = new ProdutosAdapter(this, listaProdutos);
         recyclerView.setAdapter(produtosAdapter);
+
         carregarProdutosDoFirebase();
+
+        editTextFiltro.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                aplicarFiltro();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void carregarProdutosDoFirebase(){
@@ -48,7 +75,7 @@ public class listaProdutos extends AppCompatActivity {
                                 listaProdutos.add(produto);
                             }
                         }
-                        produtosAdapter.notifyDataSetChanged();
+                        aplicarFiltro();
                     }
 
                     @Override
@@ -56,5 +83,18 @@ public class listaProdutos extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void aplicarFiltro(){
+        String filtro = editTextFiltro.getText().toString().toLowerCase();
+        listaProdutosFiltrados.clear();
+
+        for (Produto produto : listaProdutos){
+            if (produto.getDescricao() != null && produto.getDescricao().toLowerCase().contains(filtro)){
+                listaProdutosFiltrados.add(produto);
+            }
+        }
+        produtosAdapter.notifyDataSetChanged();
     }
 }

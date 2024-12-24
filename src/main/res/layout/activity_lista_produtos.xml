@@ -5,18 +5,32 @@
     android:id="@+id/reciclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DAD8D8"
     tools:context=".listaProdutos">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="412dp"
+        android:layout_height="617dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
         android:background="#DAD8D8"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFiltro"
+        app:layout_constraintVertical_bias="0.51" />
+
+    <EditText
+        android:id="@+id/editTextFiltro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="Digite o nome do produto"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
